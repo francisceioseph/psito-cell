@@ -1,7 +1,7 @@
 name: psito_cell
 description: "A cozy solitaire card game with cockatiels. No ads, no telemetry, no account."
 publish_to: 'none'
-version: 1.0.0
+version: 1.1.0
 
 environment:
   sdk: ^3.13.3
