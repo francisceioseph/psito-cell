@@ -6,12 +6,15 @@ import '../game/game_state.dart';
 
 abstract final class PsitoColors {
   static const felt = Color(0xFF426854);
+  static const feltGlow = Color(0xFF527F68);
   static const feltDark = Color(0xFF34543F);
-  static const feltLight = Color(0xFF6F9480);
+  static const feltLight = Color(0xFF7FA38F);
   static const cream = Color(0xFFF6EED6);
-  static const red = Color(0xFFB2261E);
-  static const black = Color(0xFF26262C);
-  static const edge = Color(0xFF78694F);
+  static const red = Color(0xFFC8402E);
+  static const black = Color(0xFF3B3842);
+  static const ink = Color(0xFF3F2A22);
+  static const frame = Color(0xFFC9A45C);
+  static const edge = Color(0xFFAE9A74);
   static const accent = Color(0xFFFFC107);
   static const onFelt = Color(0xFFF3EFE0);
 }
@@ -62,7 +65,13 @@ abstract final class SuitShape {
     ..addOval(Rect.fromCircle(center: const Offset(.5, .46), radius: .14))
     ..addPath(_stem, Offset.zero);
 
-  static void draw(Canvas canvas, Suit suit, Rect rect, Color color) {
+  static void draw(
+    Canvas canvas,
+    Suit suit,
+    Rect rect,
+    Color color, {
+    Color? outline,
+  }) {
     final path = switch (suit) {
       Suit.clubs => _club,
       Suit.spades => _spade,
@@ -73,6 +82,16 @@ abstract final class SuitShape {
     canvas.translate(rect.left, rect.top);
     canvas.scale(rect.width, rect.height);
     canvas.drawPath(path, Paint()..color = color);
+    if (outline != null) {
+      canvas.drawPath(
+        path,
+        Paint()
+          ..color = outline
+          ..style = PaintingStyle.stroke
+          ..strokeJoin = StrokeJoin.round
+          ..strokeWidth = .055,
+      );
+    }
     canvas.restore();
   }
 }
@@ -123,9 +142,9 @@ class CardFace extends StatelessWidget {
             borderRadius: radius,
             boxShadow: const [
               BoxShadow(
-                color: Color(0x55000000),
-                blurRadius: 3,
-                offset: Offset(0, 1),
+                color: Color(0x44000000),
+                blurRadius: 5,
+                offset: Offset(0, 2),
               ),
             ],
           ),
@@ -206,17 +225,17 @@ class _FacePainter extends CustomPainter {
         text: rankLabel(card.rank),
         style: TextStyle(
           color: _color,
-          fontSize: size.width * .16,
-          fontWeight: FontWeight.w800,
+          fontFamily: 'CardSerif',
+          fontSize: size.width * .18,
           height: 1,
         ),
       ),
       textDirection: TextDirection.ltr,
     )..layout();
-    final x = size.width * .07;
-    final y = size.width * .07;
+    final x = size.width * .09;
+    final y = size.width * .08;
     text.paint(canvas, Offset(x, y));
-    final side = size.width * .135;
+    final side = size.width * .125;
     SuitShape.draw(
       canvas,
       card.suit,
@@ -227,6 +246,47 @@ class _FacePainter extends CustomPainter {
         side,
       ),
       _color,
+      outline: PsitoColors.ink,
+    );
+  }
+
+  /// A warm sheet of paper with fine fibres and a thin printed frame.
+  void _paper(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    canvas.drawRect(
+      rect,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0x18FFFFFF), Color(0x00FFFFFF), Color(0x1E9A7238)],
+        ).createShader(rect),
+    );
+    final fibre = Paint()
+      ..color = const Color(0x075A4326)
+      ..strokeWidth = 1;
+    final random = Random(card.id);
+    for (var i = 0; i < 70; i++) {
+      final start = Offset(
+        random.nextDouble() * size.width,
+        random.nextDouble() * size.height,
+      );
+      final length = 4 + random.nextDouble() * 9;
+      canvas.drawLine(
+        start,
+        start + (i.isEven ? Offset(length, 0) : Offset(0, length)),
+        fibre,
+      );
+    }
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        rect.deflate(size.width * .04),
+        Radius.circular(size.width * .05),
+      ),
+      Paint()
+        ..color = PsitoColors.frame.withValues(alpha: .75)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = max(1, size.width * .012),
     );
   }
 
@@ -241,12 +301,14 @@ class _FacePainter extends CustomPainter {
       card.suit,
       Rect.fromCenter(center: Offset.zero, width: side, height: side),
       _color,
+      outline: PsitoColors.ink,
     );
     canvas.restore();
   }
 
   @override
   void paint(Canvas canvas, Size size) {
+    _paper(canvas, size);
     if (drawCenter) {
       if (card.rank == 1) {
         _pip(canvas, size, const Offset(.5, .5), size.width * .5);
@@ -293,12 +355,12 @@ class _SlotPainter extends CustomPainter {
       rect.deflate(1),
       Radius.circular(size.width * .07),
     );
-    canvas.drawRRect(shape, Paint()..color = PsitoColors.feltDark);
+    canvas.drawRRect(shape, Paint()..color = const Color(0x24000000));
     final line = Paint()
-      ..color = PsitoColors.feltLight
+      ..color = PsitoColors.feltLight.withValues(alpha: .7)
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = max(1.5, size.width * .025);
+      ..strokeWidth = max(1.2, size.width * .014);
     canvas.drawRRect(shape, line);
 
     final w = size.width;

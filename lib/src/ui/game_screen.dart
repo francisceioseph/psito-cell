@@ -97,6 +97,19 @@ class _GameScreenState extends State<GameScreen> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
+                      const DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            radius: 1.1,
+                            colors: [
+                              PsitoColors.feltGlow,
+                              PsitoColors.felt,
+                              PsitoColors.feltDark,
+                            ],
+                            stops: [0, .6, 1],
+                          ),
+                        ),
+                      ),
                       Board(game: _game),
                       _Peek(visible: _peeking),
                     ],

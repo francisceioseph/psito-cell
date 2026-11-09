@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 CREAM = (246, 238, 214)
 WIDTH, HEIGHT = 480, 672
-ART_SCALE = 0.84
+ART_SCALE = 1.0
 RANKS = {"rei": "king", "dama": "queen", "valete": "jack", "as": "ace"}
 SUITS = {"paus": "clubs", "espadas": "spades", "copas": "hearts", "ouros": "diamonds"}
 OUT = Path(__file__).resolve().parent.parent / "assets"
