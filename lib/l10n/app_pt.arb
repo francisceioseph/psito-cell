@@ -1,0 +1,23 @@
+{
+  "@@locale": "pt",
+  "appTitle": "Psito Cell",
+  "newGame": "Novo jogo",
+  "restart": "Recomeçar este jogo",
+  "undo": "Desfazer",
+  "gameNumber": "Jogo {number}",
+  "moves": "{count, plural, =0{0 jogadas} =1{1 jogada} other{{count} jogadas}}",
+  "youWon": "Você venceu!",
+  "playAgain": "Jogar de novo",
+  "freePerch": "Poleiro livre",
+  "emptyColumn": "Coluna vazia",
+  "nestOf": "Ninho de {suit}",
+  "cardName": "{rank} de {suit}",
+  "rankAce": "Ás",
+  "rankJack": "Valete",
+  "rankQueen": "Dama",
+  "rankKing": "Rei",
+  "suitClubs": "paus",
+  "suitSpades": "espadas",
+  "suitHearts": "copas",
+  "suitDiamonds": "ouros"
+}
