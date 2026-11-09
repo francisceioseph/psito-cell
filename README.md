@@ -40,4 +40,4 @@ os ninhos definitivos. Até lá, eles são desenhados em código.
 
 ## Licença
 
-O código segue a [MIT](LICENSE), e a arte, a [CC0](assets/LICENSE.md).
+O código segue a [Apache 2.0](LICENSE), e a arte, a [CC0](assets/LICENSE.md).
