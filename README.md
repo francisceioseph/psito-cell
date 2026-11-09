@@ -78,7 +78,7 @@ The rules live in `lib/src/game/`, in Dart with no interface, and the table, the
 and the animations in `lib/src/ui/`. Texts live in the `.arb` files in `lib/l10n/`, in
 both languages. `tool/prepare_art.py` turns the original illustrations into `assets/`.
 
-The aces of hearts and diamonds still have no illustration, and the perches and nests
+The ace of diamonds still has no cockatiel, and the perches and nests
 are simple drawings in code.
 
 ## Psito Games

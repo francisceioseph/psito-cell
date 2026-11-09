@@ -24,7 +24,3 @@ flutter:
   assets:
     - assets/cards/
     - assets/mascot/
-  fonts:
-    - family: CardSerif
-      fonts:
-        - asset: assets/fonts/CardSerif-Bold.ttf

@@ -10,10 +10,7 @@ abstract final class PsitoColors {
   static const feltDark = Color(0xFF34543F);
   static const feltLight = Color(0xFF7FA38F);
   static const cream = Color(0xFFF6EED6);
-  static const red = Color(0xFFC8402E);
   static const black = Color(0xFF3B3842);
-  static const ink = Color(0xFF3F2A22);
-  static const frame = Color(0xFFC9A45C);
   static const edge = Color(0xFFAE9A74);
   static const accent = Color(0xFFFFC107);
   static const onFelt = Color(0xFFF3EFE0);
@@ -69,9 +66,8 @@ abstract final class SuitShape {
     Canvas canvas,
     Suit suit,
     Rect rect,
-    Color color, {
-    Color? outline,
-  }) {
+    Color color,
+  ) {
     final path = switch (suit) {
       Suit.clubs => _club,
       Suit.spades => _spade,
@@ -82,44 +78,27 @@ abstract final class SuitShape {
     canvas.translate(rect.left, rect.top);
     canvas.scale(rect.width, rect.height);
     canvas.drawPath(path, Paint()..color = color);
-    if (outline != null) {
-      canvas.drawPath(
-        path,
-        Paint()
-          ..color = outline
-          ..style = PaintingStyle.stroke
-          ..strokeJoin = StrokeJoin.round
-          ..strokeWidth = .055,
-      );
-    }
     canvas.restore();
   }
 }
 
-String rankLabel(int rank) => switch (rank) {
-  1 => 'A',
-  11 => 'J',
-  12 => 'Q',
-  13 => 'K',
-  _ => '$rank',
-};
-
-const _rankNames = {1: 'ace', 11: 'jack', 12: 'queen', 13: 'king'};
-const _illustratedAces = {Suit.clubs, Suit.spades};
-
-/// The illustration of a card, or null for the ones drawn only in code.
-String? cardArt(PlayingCard card) {
-  final name = _rankNames[card.rank];
-  if (name == null) return null;
-  if (card.rank == 1 && !_illustratedAces.contains(card.suit)) return null;
-  return 'assets/cards/${name}_${card.suit.name}.jpg';
+/// Every card is an image painted by tool/prepare_art.py, so that the text and
+/// the suits come out smooth and the same on every system.
+String cardArt(PlayingCard card) {
+  final rank = switch (card.rank) {
+    1 => 'ace',
+    11 => 'jack',
+    12 => 'queen',
+    13 => 'king',
+    _ => '${card.rank}',
+  };
+  return 'assets/cards/${rank}_${card.suit.name}.jpg';
 }
 
 Iterable<String> allCardArt() sync* {
   for (final suit in Suit.values) {
-    for (final rank in const [1, 11, 12, 13]) {
-      final path = cardArt(PlayingCard(suit, rank));
-      if (path != null) yield path;
+    for (var rank = 1; rank <= 13; rank++) {
+      yield cardArt(PlayingCard(suit, rank));
     }
   }
 }
@@ -132,18 +111,17 @@ class CardFace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final art = cardArt(card);
     return LayoutBuilder(
       builder: (context, box) {
-        final radius = BorderRadius.circular(box.maxWidth * .07);
+        final radius = BorderRadius.circular(box.maxWidth * .06);
         return DecoratedBox(
           decoration: BoxDecoration(
             color: PsitoColors.cream,
             borderRadius: radius,
             boxShadow: const [
               BoxShadow(
-                color: Color(0x44000000),
-                blurRadius: 5,
+                color: Color(0x4D000000),
+                blurRadius: 6,
                 offset: Offset(0, 2),
               ),
             ],
@@ -153,14 +131,12 @@ class CardFace extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                if (art != null)
-                  Image.asset(
-                    art,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.medium,
-                    gaplessPlayback: true,
-                  ),
-                CustomPaint(painter: _FacePainter(card, art == null)),
+                Image.asset(
+                  cardArt(card),
+                  fit: BoxFit.fill,
+                  filterQuality: FilterQuality.medium,
+                  gaplessPlayback: true,
+                ),
                 DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: radius,
@@ -177,158 +153,6 @@ class CardFace extends StatelessWidget {
       },
     );
   }
-}
-
-const _pips = <int, List<Offset>>{
-  2: [Offset(.5, .27), Offset(.5, .73)],
-  3: [Offset(.5, .27), Offset(.5, .5), Offset(.5, .73)],
-  4: [Offset(.3, .27), Offset(.7, .27), Offset(.3, .73), Offset(.7, .73)],
-  5: [
-    Offset(.3, .27), Offset(.7, .27), Offset(.5, .5),
-    Offset(.3, .73), Offset(.7, .73),
-  ],
-  6: [
-    Offset(.3, .27), Offset(.7, .27), Offset(.3, .5),
-    Offset(.7, .5), Offset(.3, .73), Offset(.7, .73),
-  ],
-  7: [
-    Offset(.3, .27), Offset(.7, .27), Offset(.5, .385), Offset(.3, .5),
-    Offset(.7, .5), Offset(.3, .73), Offset(.7, .73),
-  ],
-  8: [
-    Offset(.3, .27), Offset(.7, .27), Offset(.5, .385), Offset(.3, .5),
-    Offset(.7, .5), Offset(.5, .615), Offset(.3, .73), Offset(.7, .73),
-  ],
-  9: [
-    Offset(.3, .27), Offset(.7, .27), Offset(.3, .43), Offset(.7, .43),
-    Offset(.5, .5), Offset(.3, .57), Offset(.7, .57),
-    Offset(.3, .73), Offset(.7, .73),
-  ],
-  10: [
-    Offset(.3, .27), Offset(.7, .27), Offset(.5, .35), Offset(.3, .43),
-    Offset(.7, .43), Offset(.3, .57), Offset(.7, .57), Offset(.5, .65),
-    Offset(.3, .73), Offset(.7, .73),
-  ],
-};
-
-class _FacePainter extends CustomPainter {
-  const _FacePainter(this.card, this.drawCenter);
-
-  final PlayingCard card;
-  final bool drawCenter;
-
-  Color get _color => card.suit.isRed ? PsitoColors.red : PsitoColors.black;
-
-  void _index(Canvas canvas, Size size) {
-    final text = TextPainter(
-      text: TextSpan(
-        text: rankLabel(card.rank),
-        style: TextStyle(
-          color: _color,
-          fontFamily: 'CardSerif',
-          fontSize: size.width * .18,
-          height: 1,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    final x = size.width * .09;
-    final y = size.width * .08;
-    text.paint(canvas, Offset(x, y));
-    final side = size.width * .125;
-    SuitShape.draw(
-      canvas,
-      card.suit,
-      Rect.fromLTWH(
-        x + text.width + size.width * .02,
-        y + (text.height - side) / 2,
-        side,
-        side,
-      ),
-      _color,
-      outline: PsitoColors.ink,
-    );
-  }
-
-  /// A warm sheet of paper with fine fibres and a thin printed frame.
-  void _paper(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
-    canvas.drawRect(
-      rect,
-      Paint()
-        ..shader = const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0x18FFFFFF), Color(0x00FFFFFF), Color(0x1E9A7238)],
-        ).createShader(rect),
-    );
-    final fibre = Paint()
-      ..color = const Color(0x075A4326)
-      ..strokeWidth = 1;
-    final random = Random(card.id);
-    for (var i = 0; i < 70; i++) {
-      final start = Offset(
-        random.nextDouble() * size.width,
-        random.nextDouble() * size.height,
-      );
-      final length = 4 + random.nextDouble() * 9;
-      canvas.drawLine(
-        start,
-        start + (i.isEven ? Offset(length, 0) : Offset(0, length)),
-        fibre,
-      );
-    }
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        rect.deflate(size.width * .04),
-        Radius.circular(size.width * .05),
-      ),
-      Paint()
-        ..color = PsitoColors.frame.withValues(alpha: .75)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = max(1, size.width * .012),
-    );
-  }
-
-  void _pip(Canvas canvas, Size size, Offset at, double side) {
-    final center = Offset(at.dx * size.width, at.dy * size.height);
-    final flip = at.dy > .5;
-    canvas.save();
-    canvas.translate(center.dx, center.dy);
-    if (flip) canvas.rotate(pi);
-    SuitShape.draw(
-      canvas,
-      card.suit,
-      Rect.fromCenter(center: Offset.zero, width: side, height: side),
-      _color,
-      outline: PsitoColors.ink,
-    );
-    canvas.restore();
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    _paper(canvas, size);
-    if (drawCenter) {
-      if (card.rank == 1) {
-        _pip(canvas, size, const Offset(.5, .5), size.width * .5);
-      } else {
-        for (final at in _pips[card.rank]!) {
-          _pip(canvas, size, at, size.width * (card.rank >= 9 ? .15 : .19));
-        }
-      }
-    }
-    _index(canvas, size);
-    canvas.save();
-    canvas.translate(size.width, size.height);
-    canvas.rotate(pi);
-    _index(canvas, size);
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(_FacePainter old) =>
-      old.card != card || old.drawCenter != drawCenter;
 }
 
 /// An empty place on the table: a perch for the free cells, a nest for the
