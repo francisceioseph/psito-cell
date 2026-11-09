@@ -9,4 +9,4 @@ Na medida em que a lei permite, elas são dedicadas ao domínio público pela
 do jogo segue a licença Apache 2.0, no arquivo `LICENSE` da raiz.
 
 A exceção é a fonte em `fonts/`, a Noto Serif Bold, usada no índice das cartas,
-que segue a [SIL Open Font License 1.1](https://openfontlicense.org).
+que segue a SIL Open Font License 1.1, no arquivo `fonts/OFL.txt`.

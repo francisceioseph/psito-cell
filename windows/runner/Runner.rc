@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "org.psito" "\0"
-            VALUE "FileDescription", "psito_cell" "\0"
+            VALUE "CompanyName", "Psito" "\0"
+            VALUE "FileDescription", "Psito Cell" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "psito_cell" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 org.psito. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Francisco Souza" "\0"
             VALUE "OriginalFilename", "psito_cell.exe" "\0"
-            VALUE "ProductName", "psito_cell" "\0"
+            VALUE "ProductName", "Psito Cell" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

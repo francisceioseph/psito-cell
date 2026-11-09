@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Psito Cell
+GenericName=Solitaire
+GenericName[pt]=Paciência
+Comment=A cozy solitaire card game with cockatiels
+Comment[pt]=Um jogo de paciência aconchegante com calopsitas
+Exec=psito_cell
+Icon=org.psito.cell
+Terminal=false
+Categories=Game;CardGame;
+Keywords=solitaire;freecell;cards;cockatiel;paciência;cartas;calopsita;
+StartupWMClass=org.psito.cell
