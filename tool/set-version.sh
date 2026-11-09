@@ -7,3 +7,4 @@ cd "$(dirname "$0")/.."
 
 VERSION="${1:?uso: tool/set-version.sh <versão>}"
 sed -i "s/^version: .*/version: $VERSION/" pubspec.yaml
+sed -i "s/^const appVersion = .*/const appVersion = '$VERSION';/" lib/src/version.dart

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:psito_cell/l10n/app_localizations.dart';
 import 'package:psito_cell/src/game/game_controller.dart';
 import 'package:psito_cell/src/game/game_state.dart';
+import 'package:psito_cell/src/game/scores.dart';
 import 'package:psito_cell/src/ui/board.dart';
 import 'package:psito_cell/src/ui/card_face.dart';
 import 'package:psito_cell/src/ui/game_screen.dart';
@@ -60,6 +62,84 @@ Finder faceOf(int rank) => find.byWidgetPredicate(
 );
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+
+  testWidgets('the winner saves a name and sees the best games', (tester) async {
+    final game = await pumpBoard(tester);
+    game.state = const GameState(
+      columns: [
+        [PlayingCard(Suit.diamonds, 13), PlayingCard(Suit.hearts, 13)],
+        [PlayingCard(Suit.spades, 13)],
+        [PlayingCard(Suit.clubs, 13)],
+        [], [], [], [], [],
+      ],
+      cells: [null, null, null, null],
+      foundations: [12, 12, 12, 12],
+    );
+    game.sendAway(const Pile.column(1), 0);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+    expect(game.state.isWon, isTrue);
+    expect(find.text('Você venceu!'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField), 'Ana');
+    await tester.pump();
+    await tester.tap(find.text('Salvar'));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100), EnginePhase.sendSemanticsUpdate, const Duration(seconds: 12));
+
+    expect(find.text('Ana'), findsOneWidget);
+    expect(find.text('Melhores partidas'), findsOneWidget);
+    final saved = await const ScoreStore().load();
+    expect(saved.single.name, 'Ana');
+    expect(saved.single.moves, 1);
+    expect(await const ScoreStore().lastName(), 'Ana');
+    await finish(tester);
+  });
+
+  testWidgets('the victory panel fits a small window', (tester) async {
+    final game = await pumpBoard(tester);
+    tester.view.physicalSize = const Size(480, 300);
+    game.state = const GameState(
+      columns: [
+        [PlayingCard(Suit.diamonds, 13), PlayingCard(Suit.hearts, 13)],
+        [PlayingCard(Suit.spades, 13)],
+        [PlayingCard(Suit.clubs, 13)],
+        [], [], [], [], [],
+      ],
+      cells: [null, null, null, null],
+      foundations: [12, 12, 12, 12],
+    );
+    game.sendAway(const Pile.column(1), 0);
+    await tester.pump(const Duration(seconds: 2));
+    expect(tester.takeException(), isNull);
+    await finish(tester);
+  });
+
+  testWidgets('the menu starts a game by its number', (tester) async {
+    await pumpGame(tester, const Size(1280, 800));
+    await tester.tap(find.byIcon(Icons.more_vert_rounded));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    await tester.tap(find.text('Escolher número do jogo'));
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+    await tester.enterText(find.byType(TextField), '42');
+    await tester.pump();
+    await tester.tap(find.text('Jogar'));
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.text('42'), findsOneWidget);
+    await finish(tester);
+  });
+
+  testWidgets('the bar shows the new game button in wide windows', (tester) async {
+    await pumpGame(tester, const Size(1280, 800));
+    expect(find.text('Novo jogo'), findsOneWidget);
+    await finish(tester);
+    await pumpGame(tester, const Size(700, 500));
+    expect(find.text('Novo jogo'), findsNothing);
+    expect(tester.takeException(), isNull);
+    await finish(tester);
+  });
+
   testWidgets('dragging a card drops it on a column', (tester) async {
     final game = await pumpBoard(tester);
     final from = tester.getCenter(faceOf(7));
@@ -97,12 +177,13 @@ void main() {
   testWidgets('shows the table and counts a move', (tester) async {
     await pumpGame(tester, const Size(1280, 800));
     expect(find.text('Psito Cell'), findsOneWidget);
-    expect(find.text('0 jogadas'), findsOneWidget);
-    expect(find.text('Jogo 3'), findsOneWidget);
+    expect(find.text('JOGADAS'), findsOneWidget);
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('3'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Novo jogo'));
+    await tester.tap(find.byIcon(Icons.casino_outlined));
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.text('Jogo 3'), findsNothing);
+    expect(find.text('3'), findsNothing);
     await finish(tester);
   });
 

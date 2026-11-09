@@ -15,6 +15,7 @@ Flutter. No ads, no telemetry and no account: just a little game and some happin
 - Numbered games: the same number always gives the same deal
 - Cards that hop, shake their heads at a wrong move and bounce when you win
 - A curious cockatiel that peeks at the table when you stop to think
+- A local table of your best games, by fewest moves, kept only on your computer
 - Keyboard shortcuts: `Ctrl+Z` undoes, `Ctrl+R` restarts and `Ctrl+N` starts a new game
 - English and Portuguese
 
@@ -77,9 +78,6 @@ flutter test
 The rules live in `lib/src/game/`, in Dart with no interface, and the table, the cards
 and the animations in `lib/src/ui/`. Texts live in the `.arb` files in `lib/l10n/`, in
 both languages. `tool/prepare_art.py` turns the original illustrations into `assets/`.
-
-The ace of diamonds still has no cockatiel, and the perches and nests
-are simple drawings in code.
 
 ## Psito Games
 

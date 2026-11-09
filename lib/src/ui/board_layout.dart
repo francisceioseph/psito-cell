@@ -34,7 +34,7 @@ class BoardLayout {
   /// The distance between cards of a column. It shrinks when the column would
   /// not fit in the window.
   double stepFor(int count) {
-    final full = cardHeight * .205;
+    final full = cardHeight * .225;
     if (count <= 1) return full;
     final room = size.height - _tableauTop - pad - cardHeight;
     return max(cardHeight * .1, min(full, room / (count - 1)));

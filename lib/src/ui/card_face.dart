@@ -14,6 +14,9 @@ abstract final class PsitoColors {
   static const edge = Color(0xFFAE9A74);
   static const accent = Color(0xFFFFC107);
   static const onFelt = Color(0xFFF3EFE0);
+  static const onFeltMuted = Color(0xFFA9C3B3);
+  static const barTop = Color(0xFF2F4A3A);
+  static const barBottom = Color(0xFF263E30);
 }
 
 /// The suits are drawn as shapes so that they look the same on every system,
@@ -156,7 +159,7 @@ class CardFace extends StatelessWidget {
 }
 
 /// An empty place on the table: a perch for the free cells, a nest for the
-/// foundations. Simple drawings until the illustrated ones arrive.
+/// foundations.
 class SlotView extends StatelessWidget {
   const SlotView.perch({super.key}) : suit = null;
   const SlotView.nest(Suit this.suit, {super.key});
@@ -164,7 +167,26 @@ class SlotView extends StatelessWidget {
   final Suit? suit;
 
   @override
-  Widget build(BuildContext context) => CustomPaint(painter: _SlotPainter(suit));
+  Widget build(BuildContext context) => Stack(
+    fit: StackFit.expand,
+    children: [
+      CustomPaint(painter: _SlotPainter(suit)),
+      Align(
+        alignment: suit == null ? Alignment.center : const Alignment(0, .5),
+        child: FractionallySizedBox(
+          widthFactor: suit == null ? .9 : .84,
+          child: Opacity(
+            opacity: .92,
+            child: Image.asset(
+              'assets/slots/${suit == null ? 'perch' : 'nest'}.png',
+              filterQuality: FilterQuality.medium,
+              gaplessPlayback: true,
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 class _SlotPainter extends CustomPainter {
@@ -187,39 +209,18 @@ class _SlotPainter extends CustomPainter {
       ..strokeWidth = max(1.2, size.width * .014);
     canvas.drawRRect(shape, line);
 
-    final w = size.width;
-    final h = size.height;
     if (suit case final suit?) {
-      for (var i = 0; i < 3; i++) {
-        final y = h * (.66 + i * .05);
-        canvas.drawArc(
-          Rect.fromCenter(
-            center: Offset(w / 2, y - h * .08),
-            width: w * (.72 - i * .08),
-            height: h * .26,
-          ),
-          .15,
-          pi - .3,
-          false,
-          line,
-        );
-      }
-      final side = w * .36;
+      final side = size.width * .34;
       SuitShape.draw(
         canvas,
         suit,
-        Rect.fromCenter(center: Offset(w / 2, h * .36), width: side, height: side),
+        Rect.fromCenter(
+          center: Offset(size.width / 2, size.height * .26),
+          width: side,
+          height: side,
+        ),
         PsitoColors.feltLight,
       );
-    } else {
-      final branch = Path()
-        ..moveTo(w * .16, h * .56)
-        ..quadraticBezierTo(w * .5, h * .46, w * .84, h * .52);
-      canvas.drawPath(branch, line);
-      final twig = Path()
-        ..moveTo(w * .64, h * .5)
-        ..quadraticBezierTo(w * .7, h * .42, w * .78, h * .38);
-      canvas.drawPath(twig, line);
     }
   }
 

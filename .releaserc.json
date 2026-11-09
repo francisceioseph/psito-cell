@@ -10,7 +10,7 @@
     [
       "@semantic-release/git",
       {
-        "assets": ["pubspec.yaml"],
+        "assets": ["pubspec.yaml", "lib/src/version.dart"],
         "message": "chore(release): ${nextRelease.version} [skip ci]"
       }
     ],

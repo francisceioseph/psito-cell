@@ -122,12 +122,6 @@ abstract class AppLocalizations {
   /// **'Undo'**
   String get undo;
 
-  /// No description provided for @gameNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Game {number}'**
-  String gameNumber(int number);
-
   /// No description provided for @moves.
   ///
   /// In en, this message translates to:
@@ -217,6 +211,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'diamonds'**
   String get suitDiamonds;
+
+  /// No description provided for @winSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{moves} in {time}'**
+  String winSummary(String moves, String time);
+
+  /// No description provided for @yourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get yourName;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @bestGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Best games'**
+  String get bestGames;
+
+  /// No description provided for @noScores.
+  ///
+  /// In en, this message translates to:
+  /// **'No games won yet.'**
+  String get noScores;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @statGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Game'**
+  String get statGame;
+
+  /// No description provided for @statMoves.
+  ///
+  /// In en, this message translates to:
+  /// **'Moves'**
+  String get statMoves;
+
+  /// No description provided for @statTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get statTime;
+
+  /// No description provided for @moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// No description provided for @chooseGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a game number'**
+  String get chooseGame;
+
+  /// No description provided for @howToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'How to play'**
+  String get howToPlay;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @play.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get play;
+
+  /// No description provided for @howToPlayBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Move all the cards to the four nests, from Ace to King, by suit.\n\nIn the columns, a card goes on one rank higher, of the other colour. Each perch holds one card at a time.\n\nClick a card and then its destination, or drag it. A double click sends it to the best place. Cards that are no longer needed fly to the nests on their own.\n\nThe free spaces decide how many cards can move at once.\n\nCtrl+Z undoes, Ctrl+R restarts this game and Ctrl+N starts a new one.'**
+  String get howToPlayBody;
+
+  /// No description provided for @aboutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A cozy solitaire with cockatiels. No ads, no telemetry and no account.'**
+  String get aboutBody;
+
+  /// No description provided for @aboutLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'Code under the Apache 2.0 license. Card art under CC0.'**
+  String get aboutLegal;
 }
 
 class _AppLocalizationsDelegate

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../l10n/app_localizations.dart';
 import '../game/game_controller.dart';
+import 'app_bar.dart';
 import 'board.dart';
 import 'card_face.dart';
 
@@ -41,6 +41,9 @@ class _GameScreenState extends State<GameScreen> {
     for (final path in allCardArt()) {
       precacheImage(AssetImage(path), context);
     }
+    for (final slot in const ['perch', 'nest']) {
+      precacheImage(AssetImage('assets/slots/$slot.png'), context);
+    }
   }
 
   @override
@@ -70,7 +73,6 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: PsitoColors.felt,
       body: CallbackShortcuts(
@@ -91,7 +93,7 @@ class _GameScreenState extends State<GameScreen> {
               children: [
                 ListenableBuilder(
                   listenable: _game,
-                  builder: (context, _) => _Toolbar(game: _game, l10n: l10n),
+                  builder: (context, _) => GameAppBar(game: _game),
                 ),
                 Expanded(
                   child: Stack(
@@ -118,77 +120,6 @@ class _GameScreenState extends State<GameScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Toolbar extends StatelessWidget {
-  const _Toolbar({required this.game, required this.l10n});
-
-  final GameController game;
-  final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    const light = TextStyle(color: PsitoColors.onFelt);
-    return ColoredBox(
-      color: PsitoColors.feltDark,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        child: Row(
-          children: [
-            Flexible(
-              child: Text(
-                l10n.appTitle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: light.copyWith(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Flexible(
-              child: Text(
-                l10n.gameNumber(game.number),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: light,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Flexible(
-              child: Text(
-                l10n.moves(game.moves),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: light,
-              ),
-            ),
-            const Spacer(),
-            IconButton(
-              tooltip: l10n.undo,
-              color: PsitoColors.onFelt,
-              disabledColor: PsitoColors.feltLight,
-              onPressed: game.canUndo ? game.undo : null,
-              icon: const Icon(Icons.undo),
-            ),
-            IconButton(
-              tooltip: l10n.restart,
-              color: PsitoColors.onFelt,
-              onPressed: game.restart,
-              icon: const Icon(Icons.replay),
-            ),
-            IconButton(
-              tooltip: l10n.newGame,
-              color: PsitoColors.onFelt,
-              onPressed: game.newGame,
-              icon: const Icon(Icons.casino_outlined),
-            ),
-          ],
         ),
       ),
     );

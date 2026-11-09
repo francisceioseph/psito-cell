@@ -4,7 +4,7 @@
 Usage: prepare_art.py <source dir>
 
 The source dir holds figuras/{rei,dama,valete}_{paus,espadas,copas,ouros}.jpeg
-and ases/as_<suit>.jpeg. The cards are images, painted here at a high resolution,
+ases/as_<suit>.jpeg and espacos/{poleiro,ninho}.jpeg. The cards are images, painted here at a high resolution,
 so that they look smooth and the same on every system.
 """
 import math
@@ -16,6 +16,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 WIDTH, HEIGHT = 480, 672
 SS = 4  # supersampling of the shapes and the text
+INDEX_X = 0.105  # the centre of the corner index, as a share of the width
 CREAM = (245, 236, 212)
 INK = (63, 42, 34)
 RED = (194, 58, 42)
@@ -34,7 +35,7 @@ OUT = ROOT / "assets"
 FONT = ROOT / "assets" / "fonts" / "CardSerif-Bold.ttf"
 
 ROWS = (0.28, 0.4267, 0.5733, 0.72)
-L, C, R = 0.31, 0.5, 0.69
+L, C, R = 0.265, 0.5, 0.735
 PIPS = {
     2: [(C, 0.28), (C, 0.72)],
     3: [(C, 0.28), (C, 0.5), (C, 0.72)],
@@ -47,7 +48,7 @@ PIPS = {
         (R, 0.5), (C, 0.61), (L, 0.72), (R, 0.72),
     ],
     9: [(x, y) for x in (L, R) for y in ROWS] + [(C, 0.5)],
-    10: [(x, y) for x in (L, R) for y in ROWS] + [(C, 0.353), (C, 0.647)],
+    10: [(x, y) for x in (L, R) for y in ROWS] + [(C, 0.3533), (C, 0.6467)],
 }
 
 
@@ -187,19 +188,20 @@ def put(card, tile, cx, cy, flip=False):
 def index(card, label, suit, colour):
     layer = Image.new("RGBA", card.size, (0, 0, 0, 0))
     big = Image.new("L", (WIDTH * SS, HEIGHT * SS), 0)
-    size = WIDTH * (0.135 if label == "10" else 0.165) * SS
-    x = WIDTH * 0.11 * SS
+    size = WIDTH * (0.118 if label == "10" else 0.15) * SS
+    x = WIDTH * INDEX_X * SS
+    # Aligned by the baseline: the tails of the J and the Q go below it.
     ImageDraw.Draw(big).text(
-        (x, WIDTH * 0.108 * SS),
+        (x, WIDTH * 0.155 * SS),
         label,
         font=ImageFont.truetype(str(FONT), int(size)),
         fill=255,
-        anchor="mm",
+        anchor="ms",
     )
     text = Image.new("RGBA", card.size, colour + (0,))
     text.putalpha(big.resize(card.size, Image.LANCZOS))
     layer.alpha_composite(text)
-    put(layer, suit_tile(suit, int(WIDTH * 0.092), colour), WIDTH * 0.11, WIDTH * 0.226)
+    put(layer, suit_tile(suit, int(WIDTH * 0.08), colour), WIDTH * INDEX_X, WIDTH * 0.25)
     card.alpha_composite(layer)
     card.alpha_composite(layer.rotate(180))
 
@@ -313,14 +315,14 @@ def number(rank, suit):
     colour = RED if suit in ("hearts", "diamonds") else BLACK
     card = paper()
     frame(card)
-    tile = suit_tile(suit, int(WIDTH * 0.17), colour)
+    tile = suit_tile(suit, int(WIDTH * (0.14 if rank >= 8 else 0.16)), colour)
     for x, y in PIPS[rank]:
         put(card, tile, x * WIDTH, y * HEIGHT, flip=y > 0.5)
     index(card, str(rank), suit, colour)
     return card
 
 
-def mascot(path):
+def cutout(path):
     """Removes the background by flooding it from the corners."""
     rgb = Image.open(path).convert("RGB")
     key = (255, 0, 255)
@@ -332,9 +334,23 @@ def mascot(path):
     alpha.putdata([0 if p == key else 255 for p in flooded.getdata()])
     alpha = alpha.filter(ImageFilter.GaussianBlur(0.9))
     rgb.putalpha(alpha)
-    rgb = rgb.crop(alpha.point(lambda v: 255 if v > 16 else 0).getbbox())
-    ratio = 420 / rgb.height
-    return rgb.resize((int(rgb.width * ratio), 420), Image.LANCZOS)
+    return rgb.crop(alpha.point(lambda v: 255 if v > 16 else 0).getbbox())
+
+
+def fit_height(image, height):
+    return image.resize((int(image.width * height / image.height), height), Image.LANCZOS)
+
+
+def fit_width(image, width):
+    return image.resize((width, int(image.height * width / image.width)), Image.LANCZOS)
+
+
+def slots(source):
+    """The empty places on the table: the perch and the nest."""
+    (OUT / "slots").mkdir(parents=True, exist_ok=True)
+    for pt, name in (("poleiro", "perch"), ("ninho", "nest")):
+        image = fit_width(cutout(source / "espacos" / f"{pt}.jpeg"), 400)
+        image.save(OUT / "slots" / f"{name}.png", optimize=True)
 
 
 def save(card, name):
@@ -351,7 +367,10 @@ def main(source):
             save(number(rank, suit), f"{rank}_{suit}")
         for pt_rank, (name, label) in COURT.items():
             save(court(source / "figuras" / f"{pt_rank}_{pt}.jpeg", label, suit), f"{name}_{suit}")
-    mascot(source / "ases" / "as_paus.jpeg").save(OUT / "mascot" / "peek.png", optimize=True)
+    fit_height(cutout(source / "ases" / "as_paus.jpeg"), 420).save(
+        OUT / "mascot" / "peek.png", optimize=True
+    )
+    slots(source)
 
 
 if __name__ == "__main__":

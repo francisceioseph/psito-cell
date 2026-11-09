@@ -22,11 +22,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get undo => 'Undo';
 
   @override
-  String gameNumber(int number) {
-    return 'Game $number';
-  }
-
-  @override
   String moves(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -82,4 +77,66 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get suitDiamonds => 'diamonds';
+
+  @override
+  String winSummary(String moves, String time) {
+    return '$moves in $time';
+  }
+
+  @override
+  String get yourName => 'Your name';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get bestGames => 'Best games';
+
+  @override
+  String get noScores => 'No games won yet.';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get statGame => 'Game';
+
+  @override
+  String get statMoves => 'Moves';
+
+  @override
+  String get statTime => 'Time';
+
+  @override
+  String get moreOptions => 'More options';
+
+  @override
+  String get chooseGame => 'Choose a game number';
+
+  @override
+  String get howToPlay => 'How to play';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get play => 'Play';
+
+  @override
+  String get howToPlayBody =>
+      'Move all the cards to the four nests, from Ace to King, by suit.\n\nIn the columns, a card goes on one rank higher, of the other colour. Each perch holds one card at a time.\n\nClick a card and then its destination, or drag it. A double click sends it to the best place. Cards that are no longer needed fly to the nests on their own.\n\nThe free spaces decide how many cards can move at once.\n\nCtrl+Z undoes, Ctrl+R restarts this game and Ctrl+N starts a new one.';
+
+  @override
+  String get aboutBody =>
+      'A cozy solitaire with cockatiels. No ads, no telemetry and no account.';
+
+  @override
+  String get aboutLegal =>
+      'Code under the Apache 2.0 license. Card art under CC0.';
 }

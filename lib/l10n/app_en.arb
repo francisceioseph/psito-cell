@@ -4,18 +4,37 @@
   "newGame": "New game",
   "restart": "Restart this game",
   "undo": "Undo",
-  "gameNumber": "Game {number}",
-  "@gameNumber": { "placeholders": { "number": { "type": "int" } } },
   "moves": "{count, plural, =1{1 move} other{{count} moves}}",
-  "@moves": { "placeholders": { "count": { "type": "int" } } },
+  "@moves": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "youWon": "You won!",
   "playAgain": "Play again",
   "freePerch": "Free perch",
   "emptyColumn": "Empty column",
   "nestOf": "Nest of {suit}",
-  "@nestOf": { "placeholders": { "suit": { "type": "String" } } },
+  "@nestOf": {
+    "placeholders": {
+      "suit": {
+        "type": "String"
+      }
+    }
+  },
   "cardName": "{rank} of {suit}",
-  "@cardName": { "placeholders": { "rank": { "type": "String" }, "suit": { "type": "String" } } },
+  "@cardName": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      },
+      "suit": {
+        "type": "String"
+      }
+    }
+  },
   "rankAce": "Ace",
   "rankJack": "Jack",
   "rankQueen": "Queen",
@@ -23,5 +42,34 @@
   "suitClubs": "clubs",
   "suitSpades": "spades",
   "suitHearts": "hearts",
-  "suitDiamonds": "diamonds"
+  "suitDiamonds": "diamonds",
+  "winSummary": "{moves} in {time}",
+  "@winSummary": {
+    "placeholders": {
+      "moves": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "yourName": "Your name",
+  "save": "Save",
+  "skip": "Skip",
+  "bestGames": "Best games",
+  "noScores": "No games won yet.",
+  "close": "Close",
+  "statGame": "Game",
+  "statMoves": "Moves",
+  "statTime": "Time",
+  "moreOptions": "More options",
+  "chooseGame": "Choose a game number",
+  "howToPlay": "How to play",
+  "about": "About",
+  "cancel": "Cancel",
+  "play": "Play",
+  "howToPlayBody": "Move all the cards to the four nests, from Ace to King, by suit.\n\nIn the columns, a card goes on one rank higher, of the other colour. Each perch holds one card at a time.\n\nClick a card and then its destination, or drag it. A double click sends it to the best place. Cards that are no longer needed fly to the nests on their own.\n\nThe free spaces decide how many cards can move at once.\n\nCtrl+Z undoes, Ctrl+R restarts this game and Ctrl+N starts a new one.",
+  "aboutBody": "A cozy solitaire with cockatiels. No ads, no telemetry and no account.",
+  "aboutLegal": "Code under the Apache 2.0 license. Card art under CC0."
 }

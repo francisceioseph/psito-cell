@@ -22,11 +22,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get undo => 'Desfazer';
 
   @override
-  String gameNumber(int number) {
-    return 'Jogo $number';
-  }
-
-  @override
   String moves(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -83,4 +78,66 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get suitDiamonds => 'ouros';
+
+  @override
+  String winSummary(String moves, String time) {
+    return '$moves em $time';
+  }
+
+  @override
+  String get yourName => 'Seu nome';
+
+  @override
+  String get save => 'Salvar';
+
+  @override
+  String get skip => 'Pular';
+
+  @override
+  String get bestGames => 'Melhores partidas';
+
+  @override
+  String get noScores => 'Nenhuma partida vencida ainda.';
+
+  @override
+  String get close => 'Fechar';
+
+  @override
+  String get statGame => 'Jogo';
+
+  @override
+  String get statMoves => 'Jogadas';
+
+  @override
+  String get statTime => 'Tempo';
+
+  @override
+  String get moreOptions => 'Mais opções';
+
+  @override
+  String get chooseGame => 'Escolher número do jogo';
+
+  @override
+  String get howToPlay => 'Como jogar';
+
+  @override
+  String get about => 'Sobre';
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get play => 'Jogar';
+
+  @override
+  String get howToPlayBody =>
+      'Leve todas as cartas para os quatro ninhos, do Ás ao Rei, por naipe.\n\nNas colunas, a carta vai sobre outra um número acima, de cor diferente. Cada poleiro guarda uma carta por vez.\n\nClique em uma carta e depois no destino, ou arraste. O duplo clique manda a carta para o melhor lugar. As cartas que não fazem mais falta voam sozinhas para os ninhos.\n\nOs espaços livres decidem quantas cartas podem se mover de uma vez.\n\nCtrl+Z desfaz, Ctrl+R recomeça este jogo e Ctrl+N começa um novo.';
+
+  @override
+  String get aboutBody =>
+      'Uma paciência aconchegante com calopsitas. Sem anúncios, sem telemetria e sem conta.';
+
+  @override
+  String get aboutLegal =>
+      'Código sob a licença Apache 2.0. Arte das cartas sob CC0.';
 }

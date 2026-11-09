@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../game/game_controller.dart';
 import '../game/game_state.dart';
+import '../game/scores.dart';
 import 'board_layout.dart';
 import 'card_face.dart';
+import 'victory_panel.dart';
 
 class _Placed {
   const _Placed(this.card, this.pile, this.index, this.offset, this.pileSize);
@@ -31,9 +33,10 @@ class _Drag {
 
 /// The table: every card is one widget that travels on its own.
 class Board extends StatefulWidget {
-  const Board({super.key, required this.game});
+  const Board({super.key, required this.game, this.scores = const ScoreStore()});
 
   final GameController game;
+  final ScoreStore scores;
 
   @override
   State<Board> createState() => _BoardState();
@@ -313,7 +316,7 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
                     ),
                 for (final placed in _place(game.state, layout))
                   _card(layout, placed, l10n, still),
-                if (game.state.isWon) _victory(l10n),
+                if (game.state.isWon) _victory(),
               ],
             ),
           ),
@@ -322,36 +325,10 @@ class _BoardState extends State<Board> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _victory(AppLocalizations l10n) => Center(
+  Widget _victory() => Center(
     child: FadeTransition(
-      opacity: CurvedAnimation(
-        parent: _win,
-        curve: const Interval(.3, .4),
-      ),
-      child: Card(
-        color: PsitoColors.cream,
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                l10n.youWon,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  color: PsitoColors.black,
-                ),
-              ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: game.newGame,
-                child: Text(l10n.playAgain),
-              ),
-            ],
-          ),
-        ),
-      ),
+      opacity: CurvedAnimation(parent: _win, curve: const Interval(.15, .22)),
+      child: VictoryPanel(game: game, store: widget.scores),
     ),
   );
 }

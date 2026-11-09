@@ -43,9 +43,17 @@ class GameController extends ChangeNotifier {
 
   final List<GameState> _history = [];
   final List<int> _movesHistory = [];
+  final Stopwatch _clock = Stopwatch();
   Timer? _collectTimer;
 
   bool get canUndo => _history.isNotEmpty;
+
+  /// The time played, from the first move until the win.
+  int get seconds => _clock.elapsed.inSeconds;
+
+  void _stopClockIfWon() {
+    if (state.isWon) _clock.stop();
+  }
 
   void newGame([int? number]) {
     this.number = number ?? _randomNumber();
@@ -56,6 +64,9 @@ class GameController extends ChangeNotifier {
 
   void _restart() {
     _collectTimer?.cancel();
+    _clock
+      ..stop()
+      ..reset();
     state = GameState.deal(number);
     moves = 0;
     selected = null;
@@ -118,6 +129,8 @@ class GameController extends ChangeNotifier {
     selected = null;
     lastMoved = moved;
     rejected = const {};
+    _clock.start();
+    _stopClockIfWon();
     notifyListeners();
     _collect();
     return true;
@@ -188,6 +201,7 @@ class GameController extends ChangeNotifier {
     final card = _cards(from, 1).single;
     state = state.move(from, 1, Pile.foundation(card.suit.index))!;
     lastMoved = {card.id};
+    _stopClockIfWon();
     notifyListeners();
     return true;
   }
