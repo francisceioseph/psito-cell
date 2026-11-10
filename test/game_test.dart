@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:psito_games_ui/psito_games_ui.dart';
 import 'package:psito_cell/src/game/game_controller.dart';
 import 'package:psito_cell/src/game/game_state.dart';
 
@@ -215,6 +216,35 @@ void main() {
       expect(game.selected, isNull);
       expect(game.rejectTick, tick + 1);
       expect(game.rejected.length, 2);
+    });
+
+    test('the cards land, refuse and win with their sounds', () {
+      final sounds = RecordedSounds();
+      final game = GameController(
+        number: 5,
+        collectDelay: Duration.zero,
+        sounds: sounds,
+      );
+      game.state = table(
+        columns: [
+          [const PlayingCard(_s, 9), const PlayingCard(_c, 8)],
+        ],
+      );
+      game.tapCard(const Pile.column(0), 0);
+      expect(sounds.played, [GameSound.refuse]);
+
+      sounds.clear();
+      game.state = table(
+        columns: [
+          [const PlayingCard(_d, 13), const PlayingCard(_h, 13)],
+          [const PlayingCard(_s, 13)],
+          [const PlayingCard(_c, 13)],
+        ],
+        foundations: const [12, 12, 12, 12],
+      );
+      game.sendAway(const Pile.column(1), 0);
+      expect(sounds.played.where((s) => s == GameSound.place).length, 4);
+      expect(sounds.played.last, GameSound.victory);
     });
 
     test('the last card wins the game and the rest collects itself', () {
