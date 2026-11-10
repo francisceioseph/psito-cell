@@ -13,15 +13,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get appTitle => 'Psito Cell';
 
   @override
-  String get newGame => 'Novo jogo';
-
-  @override
-  String get restart => 'Recomeçar este jogo';
-
-  @override
-  String get undo => 'Desfazer';
-
-  @override
   String moves(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -35,9 +26,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get youWon => 'Você venceu!';
-
-  @override
-  String get playAgain => 'Jogar de novo';
 
   @override
   String get freePerch => 'Poleiro livre';
@@ -85,49 +73,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get yourName => 'Seu nome';
-
-  @override
-  String get save => 'Salvar';
-
-  @override
-  String get skip => 'Pular';
-
-  @override
-  String get bestGames => 'Melhores partidas';
-
-  @override
-  String get noScores => 'Nenhuma partida vencida ainda.';
-
-  @override
-  String get close => 'Fechar';
-
-  @override
-  String get statGame => 'Jogo';
-
-  @override
   String get statMoves => 'Jogadas';
-
-  @override
-  String get statTime => 'Tempo';
-
-  @override
-  String get moreOptions => 'Mais opções';
-
-  @override
-  String get chooseGame => 'Escolher número do jogo';
-
-  @override
-  String get howToPlay => 'Como jogar';
-
-  @override
-  String get about => 'Sobre';
-
-  @override
-  String get cancel => 'Cancelar';
-
-  @override
-  String get play => 'Jogar';
 
   @override
   String get howToPlayBody =>

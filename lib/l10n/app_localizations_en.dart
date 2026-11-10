@@ -13,15 +13,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Psito Cell';
 
   @override
-  String get newGame => 'New game';
-
-  @override
-  String get restart => 'Restart this game';
-
-  @override
-  String get undo => 'Undo';
-
-  @override
   String moves(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -34,9 +25,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youWon => 'You won!';
-
-  @override
-  String get playAgain => 'Play again';
 
   @override
   String get freePerch => 'Free perch';
@@ -84,49 +72,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get yourName => 'Your name';
-
-  @override
-  String get save => 'Save';
-
-  @override
-  String get skip => 'Skip';
-
-  @override
-  String get bestGames => 'Best games';
-
-  @override
-  String get noScores => 'No games won yet.';
-
-  @override
-  String get close => 'Close';
-
-  @override
-  String get statGame => 'Game';
-
-  @override
   String get statMoves => 'Moves';
-
-  @override
-  String get statTime => 'Time';
-
-  @override
-  String get moreOptions => 'More options';
-
-  @override
-  String get chooseGame => 'Choose a game number';
-
-  @override
-  String get howToPlay => 'How to play';
-
-  @override
-  String get about => 'About';
-
-  @override
-  String get cancel => 'Cancel';
-
-  @override
-  String get play => 'Play';
 
   @override
   String get howToPlayBody =>
