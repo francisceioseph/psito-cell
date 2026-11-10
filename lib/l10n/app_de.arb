@@ -1,0 +1,23 @@
+{
+  "@@locale": "de",
+  "appTitle": "Psito Cell",
+  "moves": "{count, plural, =1{1 Zug} other{{count} Züge}}",
+  "youWon": "Gewonnen!",
+  "freePerch": "Freie Stange",
+  "emptyColumn": "Leere Spalte",
+  "nestOf": "Nest für {suit}",
+  "cardName": "{suit}-{rank}",
+  "rankAce": "Ass",
+  "rankJack": "Bube",
+  "rankQueen": "Dame",
+  "rankKing": "König",
+  "suitClubs": "Kreuz",
+  "suitSpades": "Pik",
+  "suitHearts": "Herz",
+  "suitDiamonds": "Karo",
+  "winSummary": "{moves} in {time}",
+  "statMoves": "Züge",
+  "howToPlayBody": "Bringe alle Karten in die vier Nester, vom Ass bis zum König, nach Farbe.\n\nIn den Spalten kommt eine Karte auf eine um einen Rang höhere der anderen Farbe. Jede Stange hält eine Karte auf einmal.\n\nKlicke auf eine Karte und dann auf ihr Ziel, oder ziehe sie. Ein Doppelklick schickt sie an den besten Platz. Karten, die nicht mehr gebraucht werden, fliegen von selbst in die Nester.\n\nDie freien Plätze bestimmen, wie viele Karten auf einmal ziehen können.\n\nStrg+Z macht rückgängig, Strg+R startet dieses Spiel neu und Strg+N beginnt ein neues.",
+  "aboutBody": "Eine gemütliche Patience mit Nymphensittichen. Ohne Werbung, ohne Telemetrie und ohne Konto.",
+  "aboutLegal": "Code unter der Apache-2.0-Lizenz. Kartengrafiken unter CC0."
+}

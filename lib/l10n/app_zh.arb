@@ -1,0 +1,23 @@
+{
+  "@@locale": "zh",
+  "appTitle": "Psito Cell",
+  "moves": "{count, plural, other{{count} 步}}",
+  "youWon": "你赢了！",
+  "freePerch": "空栖木",
+  "emptyColumn": "空列",
+  "nestOf": "{suit}的鸟巢",
+  "cardName": "{suit}{rank}",
+  "rankAce": "A",
+  "rankJack": "J",
+  "rankQueen": "Q",
+  "rankKing": "K",
+  "suitClubs": "梅花",
+  "suitSpades": "黑桃",
+  "suitHearts": "红桃",
+  "suitDiamonds": "方块",
+  "winSummary": "用时 {time}，{moves}",
+  "statMoves": "步数",
+  "howToPlayBody": "按花色把所有的牌从 A 到 K 移到四个鸟巢里。\n\n在列中，一张牌可以放在比它大一点、颜色不同的牌上。每根栖木一次只能放一张牌。\n\n单击一张牌，再单击它要去的地方，或者直接拖动它。双击会把牌送到最合适的位置。不再需要的牌会自己飞进鸟巢。\n\n空位的多少决定了一次能移动几张牌。\n\nCtrl+Z 撤销，Ctrl+R 重新开始本局，Ctrl+N 开始新的一局。",
+  "aboutBody": "与玄凤鹦鹉一起玩的温馨纸牌游戏。没有广告，没有遥测，也不需要账号。",
+  "aboutLegal": "代码采用 Apache 2.0 许可证。牌面美术采用 CC0。"
+}
